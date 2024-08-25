@@ -1,0 +1,10 @@
+services:
+  backend:
+    build: .
+    image: backend-image
+    container_name: backend
+    env_file: .env
+    environment:
+      - WEB_CONCURRENCY
+    ports:
+      - "8000:8000"
