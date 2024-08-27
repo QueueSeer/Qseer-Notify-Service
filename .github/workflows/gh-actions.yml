@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
     runs-on: self-hosted
-    environment: Production
+    
     steps:
     - name: Fetch latest commit
       uses: actions/checkout@v4
