@@ -1,0 +1,31 @@
+name: Qseer-Notify-Service
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: self-hosted
+    environment: Production
+    steps:
+    - name: Fetch latest commit
+      uses: actions/checkout@v4
+    - name: Create .env 
+      env:
+        ENV_FILE: ${{ secrets.ENV_FILE }}
+      run: echo "$ENV_FILE" > .env
+    - name: Build app
+      run: docker compose up --force-recreate --build --detach
+      env:
+        WEB_CONCURRENCY: ${{ vars.WEB_CONCURRENCY }}
+    - name: Check if app is running
+      id: checkAlive
+      run: sleep 5 && docker compose ps --services --status=exited | grep -v '\b\b'
+    - name: Show failed logs
+      if: failure() && steps.checkAlive.outcome == 'failure'
+      run: docker compose logs
