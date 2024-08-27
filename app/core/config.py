@@ -20,6 +20,12 @@ class Settings(BaseSettings):
 
     main_BUCKET_NAME :str
 
+    smtp_PORT :int
+    smtp_SERVER :str
+    smtp_LOGIN :str
+    smtp_PASSWORD :str
+    smtp_SENDER_NOREPLY_EMAIL :str
+
     @computed_field
     @property
     def DATABASE_URL(self) -> URL:
