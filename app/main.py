@@ -8,7 +8,6 @@ import os
 from app.components import get_api_router
 from app import (
     start_up
-#    objectStorage
 )
 
 lock_file = "app/startup_task.lock"
