@@ -1,0 +1,1 @@
+from .script import run_start_up_script

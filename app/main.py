@@ -3,19 +3,40 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+import os
 
 from app.components import get_api_router
 from app import (
-    database,
-    objectStorage
+    start_up
+#    objectStorage
 )
 
-
+lock_file = "app/startup_task.lock"
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
     # database.create_tables()
+    if not os.path.exists(lock_file):
+        try:
+            # Create the lock file
+            with open(lock_file, "w") as f:
+                f.write("lock")
+
+            print("Running startup task...")
+            start_up.run_start_up_script()
+        except Exception as e:
+            print(f"Error during startup task: {e}")
+        finally:
+            print("Startup task completed.")
+    else:
+        print("Startup task already completed by another worker.")
     yield
+    if os.path.exists(lock_file):
+        try:
+            os.remove(lock_file)
+            print("Lock file removed.")
+        except Exception as e:
+            print(f"Error removing lock file: {e}")
     # shutdown
 
 

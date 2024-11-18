@@ -5,10 +5,9 @@ from sqlalchemy.orm import Session
 import urllib.parse
 import smtplib
 from email.mime.text import MIMEText
+from app.database import get_db_info
 import os
 
-from app.database import get_session
-from app.objectStorage import get_s3_connect , get_s3_main_Bucket
 from app.core.config import settings
 
 router = APIRouter(prefix="/test", tags=["tests"])
@@ -17,21 +16,21 @@ security = HTTPBearer(bearerFormat="test", scheme_name="JWT", description="JWT T
 
 @router.get("/")
 async def test():
-    print(settings.DEVELOPMENT)
+    print(get_db_info())
     
-    return [{"test": "Test"}]
+    return [{"test": get_db_info()}]
 
-@router.post("/upload",deprecated=not settings.DEVELOPMENT)
-async def upload_file(file: UploadFile = File(...)):
-    if settings.DEVELOPMENT == False :
-        raise HTTPException(status_code=503, detail='only available on dev server')
+#@router.post("/upload",deprecated=not settings.DEVELOPMENT)
+#async def upload_file(file: UploadFile = File(...)):
+    #if settings.DEVELOPMENT == False :
+    #    raise HTTPException(status_code=503, detail='only available on dev server')
     
-    try:
-        get_s3_connect().upload_fileobj(file.file, get_s3_main_Bucket(), file.filename)
-    except Exception:
-        raise HTTPException(status_code=500, detail='Something went wrong')
-    custom_url = "https://storage.qseer.app/"
-    return [{"filename": file.filename},{"fileType":file.content_type},{"url": custom_url + urllib.parse.quote(file.filename)}]
+    #try:
+        #get_s3_connect().upload_fileobj(file.file, get_s3_main_Bucket(), file.filename)
+    #except Exception:
+    #    raise HTTPException(status_code=500, detail='Something went wrong')
+    #custom_url = "https://storage.qseer.app/"
+    #return [{"filename": file.filename},{"fileType":file.content_type},{"url": custom_url + urllib.parse.quote(file.filename)}]
 
 @router.get("/get_url",deprecated=not settings.DEVELOPMENT)
 async def get_url(file_name:str):
