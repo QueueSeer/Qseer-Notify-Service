@@ -64,3 +64,5 @@ Run server
 ```
 fastapi dev app
 ```
+
+pip freeze > requirements.txt
