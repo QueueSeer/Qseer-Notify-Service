@@ -1,5 +1,6 @@
 import psycopg
 from app.database import get_db_info 
+from app.scheduler.scheduler import scheduler
 
 def run_start_up_script():
     try:
@@ -24,4 +25,5 @@ def run_start_up_script():
     except Exception as e:
         print(f"An error occurred: {e}")
     print("Hello from start up script")
+    scheduler.start()
     return 
