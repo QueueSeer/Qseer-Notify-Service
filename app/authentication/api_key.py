@@ -2,6 +2,7 @@ import psycopg
 from app.database import get_db_info 
 import secrets
 import string
+from app.core.config import settings
 
 def verify(api_key:str):
     query = "SELECT EXISTS(SELECT 1 FROM app_api_key WHERE api_key = %s)"
@@ -15,6 +16,12 @@ def verify(api_key:str):
     except Exception as e:
         print(f"An error occurred: {e}")
     if exists:
+        return True
+    else:
+        return False
+
+def verify_root_key(key):
+    if key == settings.ROOT_KEY:
         return True
     else:
         return False
