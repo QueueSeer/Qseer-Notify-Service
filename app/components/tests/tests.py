@@ -19,7 +19,7 @@ security = HTTPBearer(bearerFormat="test", scheme_name="JWT", description="JWT T
 def myfunc(future_time):
     print(future_time)
     
-@router.get("/")
+@router.get("/", deprecated= True)
 async def test():
     print(get_db_info())
     now = datetime.now()
@@ -27,11 +27,11 @@ async def test():
     job = scheduler.add_job(myfunc,trigger=DateTrigger(run_date=future_time),args=[future_time])
     return [{"test":settings.DATABASE_URL}]
 
-@router.get("/remove_all_jobs")
+@router.get("/remove_all_jobs" , deprecated= True)
 async def get_url():
     scheduler.remove_all_jobs()
     return ["remove all job"]
 
-@router.post("/send_test_email")
+@router.post("/send_test_email", deprecated= True)
 async def send_test_email(email:str):
     return [{"send to": email}]
