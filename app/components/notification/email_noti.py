@@ -28,3 +28,23 @@ async def send_verify_email(backend_verify_key:str,url:str,email:str):
                 Thank you for signing up with Qseer! Please verify your email address to complete the registration process.Click the button below to verify your email
                ''',"Verify Email Address",url,email)
     return [{"send to": email}]
+
+@router.post("/send_change_password_email")
+async def send_change_password_email(backend_verify_key:str,url:str,email:str):
+    if not verify_root_key(backend_verify_key) :
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    send_email("Reset Your Password","Hi!","",'''
+                We received a request to reset the password for your Qseer account. If you made this request, please click the button below to set a new password
+               ''',"Reset Password",url,email)
+    return [{"send to": email}]
+
+@router.post("/send_change_email_email")
+async def send_change_email_email(backend_verify_key:str,url:str,email:str):
+    if not verify_root_key(backend_verify_key) :
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    send_email("Confirm Email Change Request","Hello!","",'''
+                We received a request to update the email address associated with your Qseer account. To confirm this change, please click the button below
+               ''',"Confirm Email Change",url,email)
+    return [{"send to": email}]
