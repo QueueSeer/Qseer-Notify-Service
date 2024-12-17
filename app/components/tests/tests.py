@@ -36,6 +36,10 @@ async def get_url():
 async def Check_Authentication(api_key : api_key_token):
     return ["Verified!"]
 
+@router.get("/Get_Root_Key")
+async def get_Root_Key():
+    return [settings.ROOT_KEY]
+
 @router.post("/send_test_email", deprecated= True)
 async def send_test_email(email:str):
     return [{"send to": email}]
