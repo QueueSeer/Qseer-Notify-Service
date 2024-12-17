@@ -2,3 +2,4 @@
 __pycache__/
 .env
 testFolder
+app/startup_task.lock
