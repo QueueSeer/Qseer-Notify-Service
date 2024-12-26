@@ -42,11 +42,19 @@ class UrlEmail(BaseModel):
 
 @router.post("/send_verify_email")
 async def send_verify_email(api_key : api_key_token,urlEmail : UrlEmail):
-
     url = urlEmail.url
     email = urlEmail.email
     send_email("Verify Your Email Address","Hello!","",'''
-                Thank you for signing up with Qseer! Please verify your email address to complete the registration process.Click the button below to verify your email
+                Thank you for signing up with Qseer! Please verify your email address to complete the registration process. Click the button below to verify your email
+               ''',"Verify Email Address",url,email)
+    return [{"send to": email}]
+
+@router.post("/send_verify_seer_email")
+async def send_verify_seer_email(api_key : api_key_token,urlEmail : UrlEmail):
+    url = urlEmail.url
+    email = urlEmail.email
+    send_email("Verify Your Email Address","Hello!","",'''
+                Thank you for signing up with Qseer! Please verify your email address to complete the registration process. Click the button below to verify your email
                ''',"Verify Email Address",url,email)
     return [{"send to": email}]
 
