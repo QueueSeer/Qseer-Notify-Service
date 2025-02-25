@@ -359,8 +359,11 @@ def send_email(header:str,body_header1:str,body_header2:str,body:str,button_text
     ''', subtype='html')
 
     context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+    try :
+      with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
         #server.sendmail(sender_email, receiver_email, message)
         server.send_message(message)
-    return [{"send to": email}]
+    except Exception as e:
+      return False
+    return True
