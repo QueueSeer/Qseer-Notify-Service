@@ -110,7 +110,7 @@ async def trigger_send_appointment_email(appointment_ID : int):
     async with async_session() as session:
         appointment_info = (await session.scalars(stmt)).one_or_none()
         if appointment_info is None:
-            logger.warning(f"Not Found Appointment_info")
+            logger.warning(f"Not Found Appointment")
             return
         if appointment_info.status == ApmtStatus.pending :
             stmt_2 = (
@@ -124,7 +124,7 @@ async def trigger_send_appointment_email(appointment_ID : int):
                ''',"Qseer","qseer.app",user_email)
             logger.info(f"Send to Email : {user_email}")
         else:
-            logger.warning(f"ApmtStatus Not pending")
+            logger.info(f"ApmtStatus Not pending")
 
 @router.post("/send_appointment_email") 
 async def send_appointment_email(api_key : api_key_token , appEmail : AppointmentEmail):
