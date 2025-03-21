@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     smtp_PASSWORD :str
     smtp_SENDER_NOREPLY_EMAIL :str
 
+    MAIN_BACKEND_HOST  :str
+
     @computed_field
     @property
     def DATABASE_URL(self) -> URL:
