@@ -39,7 +39,7 @@ class Auction_Trigger_Info(BaseModel):
     security_key : str = Field(examples=["JHAKHSD*********"])
 
 @router.post("/auction")
-async def auction_trigger(auction_trigger_info : Auction_Trigger_Info):
+async def auction_trigger(api_key : api_key_token,auction_trigger_info : Auction_Trigger_Info):
     logger.info("received Trigger Request")
     obj = {
         'auction_ID' : auction_trigger_info.auction_ID,
